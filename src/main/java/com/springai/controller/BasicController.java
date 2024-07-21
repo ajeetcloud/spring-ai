@@ -1,6 +1,6 @@
-package com.example.springai.controller;
+package com.springai.controller;
 
-import com.example.springai.model.QueryRequest;
+import com.springai.model.QueryRequest;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;

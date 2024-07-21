@@ -1,4 +1,4 @@
-package com.example.springai.model;
+package com.springai.model;
 
 public class QueryRequest {
 
