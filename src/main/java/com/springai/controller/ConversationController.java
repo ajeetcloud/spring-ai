@@ -1,5 +1,6 @@
 package com.springai.controller;
 
+import com.springai.model.ChatResponse;
 import com.springai.model.QueryRequest;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY;
@@ -31,13 +32,21 @@ public class ConversationController {
     }
 
     @PostMapping("/chatMemory")
-    public String basicChatWithSystemPrompt(@RequestBody QueryRequest request) {
-        String chatId = "101";
-        return this.chatClient.prompt()
+    public ChatResponse chatMemory(@RequestBody QueryRequest request) {
+        if (request.getConversationId() == null || request.getConversationId().isEmpty()) {
+            request.setConversationId(UUID.randomUUID().toString());
+        }
+        String content = this.chatClient.prompt()
                 .user(request.getQuery())
                 .advisors(a -> a
-                                .param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-                                .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 100))
+                        .param(CHAT_MEMORY_CONVERSATION_ID_KEY, request.getConversationId())
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 100))
                 .call().content();
+
+        ChatResponse chatResponse = new ChatResponse();
+        chatResponse.setResponseContent(content);
+        chatResponse.setConversationId(request.getConversationId());
+
+        return chatResponse;
     }
 }
