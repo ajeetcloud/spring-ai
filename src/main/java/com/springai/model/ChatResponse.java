@@ -21,4 +21,12 @@ public class ChatResponse {
     public void setResponseContent(String responseContent) {
         this.responseContent = responseContent;
     }
+
+    public String getResponseTime() {
+        return responseTime;
+    }
+
+    public void setResponseTime(String responseTime) {
+        this.responseTime = responseTime;
+    }
 }
