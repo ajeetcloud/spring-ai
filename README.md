@@ -2,7 +2,7 @@
 
 This repo contains the example of Spring AI, using locally running LLM.
 
-To run LLM we are using Ollama. 
+To run LLM in local, we are using Ollama. 
 
 ### Steps to run the project.
 1. Download Ollama from https://ollama.com/.
