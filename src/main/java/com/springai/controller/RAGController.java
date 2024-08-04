@@ -11,6 +11,7 @@ import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.reader.TextReader;
+import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,7 +47,8 @@ public class RAGController {
     public void init() {
         vectorStore = new SimpleVectorStore(embeddingModel);
         TextReader textReader = new TextReader(resource);
-        vectorStore.accept(textReader.get());
+        TokenTextSplitter textSplitter = new TokenTextSplitter();
+        vectorStore.accept(textSplitter.apply(textReader.get()));
         template = """
                 Answer the questions only using the information in the provided knowledge base.
                 If you do not know the answer, please response with "I don't know."
